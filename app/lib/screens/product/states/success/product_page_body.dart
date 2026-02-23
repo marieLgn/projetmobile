@@ -79,7 +79,7 @@ class _ProductPageBodyState extends State<ProductPageBody> {
       children: [
         if(_tab == ProductDetailsCurrentTab.summary && recallState is RecallFetcherSuccess)
           RecallBanner(
-            motif: recallState.motif, conseil: recallState.conseil),
+            motif: recallState.motif, conseil: recallState.conseil, fullData: recallState.data),
 
       Expanded(
       child: Stack(

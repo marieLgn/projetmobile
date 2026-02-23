@@ -5,6 +5,7 @@ import 'package:formation_flutter/screens/product/product_fetcher.dart';
 import 'package:formation_flutter/screens/product/states/empty/product_page_empty.dart';
 import 'package:formation_flutter/screens/product/states/error/product_page_error.dart';
 import 'package:formation_flutter/screens/product/states/success/product_page_body.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
@@ -113,55 +114,55 @@ class _HeaderIcon extends StatelessWidget {
 class RecallBanner extends StatelessWidget {
   final String motif;
   final String conseil;
+  final Map<String, dynamic> fullData;
 
   const RecallBanner({
     super.key,
     required this.motif,
     required this.conseil,
+    required this.fullData
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFF0000).withOpacity(0.36),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.warning_amber_rounded, color: Color(0xFFA60000)),
-              const SizedBox(width: 8),
-              Text(
-                "RAPPEL PRODUIT",
-                style: TextStyle(
-                  color: const Color(0xFFA60000),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+    return GestureDetector(
+      onTap: () => context.push('/recall-details', extra: fullData),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFF0000).withOpacity(0.36),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded, color: Color(0xFFA60000)),
+                const SizedBox(width: 8),
+                const Text(
+                  "RAPPEL PRODUIT",
+                  style: TextStyle(
+                    color: Color(0xFFA60000),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
+                const Spacer(),
+                const Icon(Icons.chevron_right, color: Color(0xFFA60000)),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              motif,
+              style: const TextStyle(
+                color: Color(0xFFA60000),
+                fontWeight: FontWeight.w500,
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            motif,
-            style: const TextStyle(
-              color: Color(0xFFA60000),
-              fontWeight: FontWeight.w500,
             ),
-          ),
-          Text(
-            conseil,
-            style: const TextStyle(
-              color: Color(0xFFA60000),
-              fontSize: 13,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -23,6 +23,7 @@ dependencies:
   go_router: 17.1.0
 
   pocketbase: ^0.18.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
