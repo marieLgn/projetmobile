@@ -14,7 +14,7 @@ cronAdd("sync_rappels", "0 0, 12 * * *", () => {
                 
                 //on récupère les infos de la bdd
                 record.set("motif", item.motif_rappel)
-                record.set("Conseils", item.preconisations_sanitaires);
+                record.set("conseils", item.preconisations_sanitaires);
                 $app.dao().saveRecord(record);
             }
 
@@ -24,7 +24,7 @@ cronAdd("sync_rappels", "0 0, 12 * * *", () => {
                 const record = new Record(collection,{
                     "gtin": item.gtin,
                     "motif": item.motif_rappel,
-                    "Conseils": item.preconisations_sanitaires
+                    "conseils": item.preconisations_sanitaires
                 });
                 $app.dao().saveRecord(record);
             }
