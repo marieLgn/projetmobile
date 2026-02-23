@@ -3,11 +3,8 @@ import 'package:formation_flutter/l10n/app_localizations.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_theme_extension.dart';
 import 'package:formation_flutter/screens/homepage/homepage_screen.dart';
-import 'package:formation_flutter/screens/product/pocketbase_fetcher.dart';
-import 'package:formation_flutter/screens/product/product_fetcher.dart';
 import 'package:formation_flutter/screens/product/product_page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,21 +15,8 @@ GoRouter _router = GoRouter(
     GoRoute(path: '/', builder: (_, _) => HomePage()),
     GoRoute(
       path: '/product',
-      builder: (context, state) {
-        final barcode = state.extra as String;
-
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) => ProductFetcher(barcode: barcode),
-            ),
-            ChangeNotifierProvider(
-              create: (_) => PocketbaseFetcher(barcode: barcode),
-            ),
-          ],
-          child: ProductPage(barcode: barcode),
-        );
-      },
+      builder: (_, GoRouterState state) =>
+          ProductPage(barcode: state.extra as String),
     ),
   ],
 );

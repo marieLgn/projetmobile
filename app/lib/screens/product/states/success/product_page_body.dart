@@ -9,6 +9,8 @@ import 'package:formation_flutter/screens/product/states/success/tabs/product_ta
 import 'package:formation_flutter/screens/product/states/success/tabs/product_tab2.dart';
 import 'package:formation_flutter/screens/product/states/success/tabs/product_tab3.dart';
 import 'package:provider/provider.dart';
+import 'package:formation_flutter/screens/product/pocketbase_fetcher.dart';
+import 'package:formation_flutter/screens/product/product_page.dart';
 
 class ProductPageBody extends StatefulWidget {
   const ProductPageBody({super.key});
@@ -71,24 +73,36 @@ class _ProductPageBodyState extends State<ProductPageBody> {
   }
 
   Widget _getBody() {
-    return Stack(
-      children: <Widget>[
-        Offstage(
-          offstage: _tab != ProductDetailsCurrentTab.summary,
-          child: ProductTab0(),
-        ),
-        Offstage(
-          offstage: _tab != ProductDetailsCurrentTab.info,
-          child: ProductTab1(),
-        ),
-        Offstage(
-          offstage: _tab != ProductDetailsCurrentTab.nutrition,
-          child: ProductTab2(),
-        ),
-        Offstage(
-          offstage: _tab != ProductDetailsCurrentTab.nutritionalValues,
-          child: ProductTab3(),
-        ),
+    final recallState = context.watch<PocketbaseFetcher>().state;
+
+    return Column(
+      children: [
+        if(_tab == ProductDetailsCurrentTab.summary && recallState is RecallFetcherSuccess)
+          RecallBanner(
+            motif: recallState.motif, conseil: recallState.conseil),
+
+      Expanded(
+      child: Stack(
+        children: <Widget>[
+          Offstage(
+            offstage: _tab != ProductDetailsCurrentTab.summary,
+            child: ProductTab0(),
+          ),
+          Offstage(
+            offstage: _tab != ProductDetailsCurrentTab.info,
+            child: ProductTab1(),
+          ),
+          Offstage(
+            offstage: _tab != ProductDetailsCurrentTab.nutrition,
+            child: ProductTab2(),
+          ),
+          Offstage(
+            offstage: _tab != ProductDetailsCurrentTab.nutritionalValues,
+            child: ProductTab3(),
+          ),
+        ],
+      ),
+      ),
       ],
     );
   }

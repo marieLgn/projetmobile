@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/res/app_icons.dart';
+import 'package:formation_flutter/screens/product/pocketbase_fetcher.dart';
 import 'package:formation_flutter/screens/product/product_fetcher.dart';
 import 'package:formation_flutter/screens/product/states/empty/product_page_empty.dart';
 import 'package:formation_flutter/screens/product/states/error/product_page_error.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key, required this.barcode})
-    : assert(barcode.length > 0);
+      : assert(barcode.length > 0);
 
   final String barcode;
 
@@ -17,23 +18,27 @@ class ProductPage extends StatelessWidget {
     final MaterialLocalizations materialLocalizations =
         MaterialLocalizations.of(context);
 
-    return ChangeNotifierProvider<ProductFetcher>(
-      create: (_) => ProductFetcher(barcode: barcode),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductFetcher(barcode: barcode)),
+        ChangeNotifierProvider(create: (_) => PocketbaseFetcher(barcode: barcode)),
+      ],
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
           children: [
+            // C'est ici qu'on gère l'affichage principal selon l'état d'Open Food Facts
             Consumer<ProductFetcher>(
-              builder: (BuildContext context, ProductFetcher notifier, _) {
+              builder: (context, notifier, _) {
                 return switch (notifier.state) {
                   ProductFetcherLoading() => const ProductPageEmpty(),
-                  ProductFetcherError(error: var err) => ProductPageError(
-                    error: err,
-                  ),
-                  ProductFetcherSuccess() => ProductPageBody(),
+                  ProductFetcherError(error: var err) => ProductPageError(error: err),
+                  ProductFetcherSuccess() => const ProductPageBody(),
                 };
               },
             ),
+            
+            // Icônes de navigation (Close / Share)
             PositionedDirectional(
               top: 0.0,
               start: 0.0,
