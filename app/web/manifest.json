@@ -1,6 +1,6 @@
 {
-    "name": "app",
-    "short_name": "app",
+    "name": "formation_flutter",
+    "short_name": "formation_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
