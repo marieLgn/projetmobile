@@ -19,16 +19,13 @@ GoRouter _router = GoRouter(
     GoRoute(
       path: '/product',
       builder: (context, state) {
-        // On récupère le code-barres passé via extra
         final barcode = state.extra as String;
 
         return MultiProvider(
           providers: [
-            // Fournisseur pour les infos nutritionnelles (OFF)
             ChangeNotifierProvider(
               create: (_) => ProductFetcher(barcode: barcode),
             ),
-            // Fournisseur pour les alertes de rappel (PocketBase)
             ChangeNotifierProvider(
               create: (_) => PocketbaseFetcher(barcode: barcode),
             ),
