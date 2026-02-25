@@ -111,58 +111,62 @@ class _HeaderIcon extends StatelessWidget {
   }
 }
 
-class RecallBanner extends StatelessWidget {
-  final String motif;
-  final String conseil;
+class RecallBanner extends StatelessWidget{
   final Map<String, dynamic> fullData;
 
   const RecallBanner({
     super.key,
-    required this.motif,
-    required this.conseil,
     required this.fullData
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return GestureDetector(
-      onTap: () => context.push('/recall-details', extra: fullData),
+      onTap:() => context.push('/recall-details', extra: fullData),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        padding: const EdgeInsets.all(16),
+        width: 345,
+        height: 43,
         decoration: BoxDecoration(
           color: const Color(0xFFFF0000).withOpacity(0.36),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10) 
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          alignment: Alignment.centerLeft,
           children: [
-            Row(
-              children: [
-                const Icon(Icons.warning_amber_rounded, color: Color(0xFFA60000)),
-                const SizedBox(width: 8),
-                const Text(
-                  "RAPPEL PRODUIT",
+            Positioned(
+              left: 17,
+              child: SizedBox(
+                width: 236,
+                height: 16,
+                child: Text(
+                  "Ce produit fait l'objet d'un rappel produit",
+                  textAlign: TextAlign.left,
                   style: TextStyle(
-                    color: Color(0xFFA60000),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    color : Color(0xFFA60000),
+                    fontFamily: 'Avenir',
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
+                    height: 1.0
                   ),
                 ),
-                const Spacer(),
-                const Icon(Icons.chevron_right, color: Color(0xFFA60000)),
-              ],
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              motif,
-              style: const TextStyle(
-                color: Color(0xFFA60000),
-                fontWeight: FontWeight.w500,
+            Positioned(
+              right: 13,
+              child: SizedBox(
+                width: 28,
+                height: 28,
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Color(0xFFA60000),
+                    size: 18
+                  )
+                ),
               ),
             ),
           ],
-        ),
+        )
       ),
     );
   }

@@ -74,12 +74,19 @@ class _ProductPageBodyState extends State<ProductPageBody> {
 
   Widget _getBody() {
     final recallState = context.watch<PocketbaseFetcher>().state;
+    final productState = context.read<ProductFetcher>().state;
+    final String? productImageUrl = productState is ProductFetcherSuccess
+        ? productState.product.picture
+        : null;
 
     return Column(
       children: [
         if(_tab == ProductDetailsCurrentTab.summary && recallState is RecallFetcherSuccess)
           RecallBanner(
-            motif: recallState.motif, conseil: recallState.conseil, fullData: recallState.data),
+            fullData: {
+              ...recallState.data,
+              'imageUrl': productImageUrl,
+            }),
 
       Expanded(
       child: Stack(
