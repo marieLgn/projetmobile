@@ -42,10 +42,10 @@ class _PageConnexionState extends State<PageConnexion>{
                 ZoneDeTexte(controller: _passwordController, hint: "Mot de passe", icon: Icons.lock_outline, isPassword: true),
                 const SizedBox(height: 40),
 
-                bouton_dore(label: "Créer un compte", onPressed: () => context.push('/inscription')),
+                Bouton_Dore(label: "Créer un compte", onPressed: () => context.push('/inscription')),
                 const SizedBox(height: 14),
 
-                bouton_dore(label: "Se connecter", onPressed: () {print("Tentative connexion");})
+                Bouton_Dore(label: "Se connecter", onPressed: () {print("Tentative connexion");})
               ],
             ),
           ),
@@ -89,11 +89,11 @@ class ZoneDeTexte extends StatelessWidget{
   }
 }
 
-class bouton_dore extends StatelessWidget{
+class Bouton_Dore extends StatelessWidget{
   final String label;
   final VoidCallback onPressed;
 
-  const bouton_dore({required this.label, required this.onPressed});
+  const Bouton_Dore({required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context){

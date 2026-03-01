@@ -42,7 +42,7 @@ class _PageInscriptionState extends State<PageInscription>{
                 ZoneDeTexte(controller: _passwordController, hint: 'Mot de passe', icon: Icons.lock_outline, isPassword: true),
                 const SizedBox(height: 40),
                 
-                bouton_dore(label: "S'inscrire", onPressed: () {print("tentative d'inscription");})
+                Bouton_Dore(label: "S'inscrire", onPressed: () {print("tentative d'inscription");})
               ],
             )
           )
