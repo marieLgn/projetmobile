@@ -3,6 +3,7 @@ import 'package:formation_flutter/l10n/app_localizations.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_theme_extension.dart';
 import 'package:formation_flutter/screens/connexion/connexion.dart';
+import 'package:formation_flutter/screens/connexion/inscription.dart';
 import 'package:formation_flutter/screens/homepage/homepage_screen.dart';
 import 'package:formation_flutter/screens/product/product_page.dart';
 import 'package:formation_flutter/screens/product/recall_details_page.dart';
@@ -27,6 +28,10 @@ GoRouter _router = GoRouter(
         return RecallDetailsPage(recallData: data);
       },
     ),
+    GoRoute(
+      path: '/inscription',
+      builder:(context, state) => const PageInscription(),
+    )
   ],
 );
 

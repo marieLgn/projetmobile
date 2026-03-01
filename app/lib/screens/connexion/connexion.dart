@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/res/app_colors.dart';
+import 'package:go_router/go_router.dart';
 
 class PageConnexion extends StatefulWidget {
   const PageConnexion({super.key});
@@ -35,16 +36,16 @@ class _PageConnexionState extends State<PageConnexion>{
                 ),
                 const SizedBox(height: 79),
 
-                _ZoneDeTexte(controller: _emailController, hint: "Adresse Email", icon: Icons.email_outlined),
+                ZoneDeTexte(controller: _emailController, hint: "Adresse Email", icon: Icons.email_outlined),
                 const SizedBox(height: 14),
 
-                _ZoneDeTexte(controller: _passwordController, hint: "Mot de passe", icon: Icons.lock_outline, isPassword: true),
+                ZoneDeTexte(controller: _passwordController, hint: "Mot de passe", icon: Icons.lock_outline, isPassword: true),
                 const SizedBox(height: 40),
 
-                _bouton_dore(label: "Créer un compte", onPressed: () {print("Envoie sur la page inscrption");}),
+                bouton_dore(label: "Créer un compte", onPressed: () => context.push('/inscription')),
                 const SizedBox(height: 14),
 
-                _bouton_dore(label: "Se connecter", onPressed: () {print("Tentative connexion");})
+                bouton_dore(label: "Se connecter", onPressed: () {print("Tentative connexion");})
               ],
             ),
           ),
@@ -52,13 +53,19 @@ class _PageConnexionState extends State<PageConnexion>{
       )
     );
   }
+}
 
-  Widget _ZoneDeTexte({
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
+class ZoneDeTexte extends StatelessWidget{
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final bool isPassword;
+
+  ZoneDeTexte({required this.controller, required this.hint, required this.icon, this.isPassword = false});
+  
+  @override 
+  Widget build(BuildContext context)
+  {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
@@ -82,11 +89,11 @@ class _PageConnexionState extends State<PageConnexion>{
   }
 }
 
-class _bouton_dore extends StatelessWidget{
+class bouton_dore extends StatelessWidget{
   final String label;
   final VoidCallback onPressed;
 
-  const _bouton_dore({required this.label, required this.onPressed});
+  const bouton_dore({required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context){
