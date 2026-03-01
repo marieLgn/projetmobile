@@ -32,8 +32,8 @@ class RecallDetailsPage extends StatelessWidget {
             if (recallData['imageUrl'] != null)
               Image.network(
                 recallData['imageUrl'],
-                height: 300,
-                width: double.infinity,
+                height: 181,
+                width: 188,
                 fit: BoxFit.contain,
               ),
             _buildSection(

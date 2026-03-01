@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:formation_flutter/l10n/app_localizations.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_theme_extension.dart';
+import 'package:formation_flutter/screens/connexion/connexion.dart';
 import 'package:formation_flutter/screens/homepage/homepage_screen.dart';
 import 'package:formation_flutter/screens/product/product_page.dart';
 import 'package:formation_flutter/screens/product/recall_details_page.dart';
@@ -13,7 +14,7 @@ void main() {
 
 GoRouter _router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (_, _) => HomePage()),
+    GoRoute(path: '/', builder: (_, _) => PageConnexion()),
     GoRoute(
       path: '/product',
       builder: (_, GoRouterState state) =>
