@@ -17,9 +17,13 @@ class _PageInscriptionState extends State<PageInscription>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(''),
+        backgroundColor: Colors.transparent,
+      ),
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child:Center(
+      body: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -47,8 +51,7 @@ class _PageInscriptionState extends State<PageInscription>{
             )
           )
         )
-      ),
-    );
+      );
   }
 
 }
