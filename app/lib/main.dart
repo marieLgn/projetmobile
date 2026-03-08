@@ -31,6 +31,10 @@ GoRouter _router = GoRouter(
     GoRoute(
       path: '/inscription',
       builder:(context, state) => const PageInscription(),
+    ),
+    GoRoute(
+      path: '/homepage', 
+      builder: (context, state) => const HomePage(),
     )
   ],
 );

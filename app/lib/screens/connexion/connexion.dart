@@ -45,7 +45,7 @@ class _PageConnexionState extends State<PageConnexion>{
                 Bouton_Dore(label: "Créer un compte", onPressed: () => context.push('/inscription')),
                 const SizedBox(height: 14),
 
-                Bouton_Dore(label: "Se connecter", onPressed: () {print("Tentative connexion");})
+                Bouton_Dore(label: "Se connecter", onPressed: () => context.push('/homepage')),
               ],
             ),
           ),
