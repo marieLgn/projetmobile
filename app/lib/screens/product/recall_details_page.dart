@@ -37,31 +37,31 @@ class RecallDetailsPage extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             _buildSection(
-              "Dates de commercialisation",
+              'Dates de commercialisation',
               "Du ${recallData['dateDebut'] ?? ''} au ${recallData['dateFin'] ?? ''}",
             ),
             _buildSection(
-              "Distributeurs",
+              'Distributeurs',
               recallData['distributeurs'],
             ),
             _buildSection(
-              "Zone géographique",
+              'Zone géographique',
               recallData['zoneGeographique'],
             ),
             _buildSection(
-              "Motif du rappel",
+              'Motif du rappel',
               recallData['motif'],
             ),
             _buildSection(
-              "Risques encourus",
+              'Risques encourus',
               recallData['risques'],
             ),
             _buildSection(
-              "Informations complémentaires",
+              'Informations complémentaires',
               recallData['infosComplementaires'],
             ),
             _buildSection(
-              "Conduite à tenir",
+              'Conduite à tenir',
               recallData['conduiteATenir'],
             ),
             const SizedBox(height: 20),

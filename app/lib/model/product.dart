@@ -58,32 +58,31 @@ class Product {
       picture: json['pictures']?['front'] as String?,
       quantity: json['quantity'] as String?,
       brands: (json['brands'] as List<dynamic>?)?.cast<String>(),
-      manufacturingCountries:
-          (json['manufacturingCountries'] as List<dynamic>?)?.cast<String>(),
+      manufacturingCountries: (json['manufacturingCountries'] as List<dynamic>?)
+          ?.cast<String>(),
       nutriScore: _parseNutriScore(json['nutriScore']),
       nutriScoreLevels: json['levels'] != null
           ? ProductNutriScoreLevels.fromJson(json['levels'])
           : null,
       novaScore: _parseNovaScore(json['novaScore']),
       greenScore: _parseGreenScore(json['ecoScoreGrade']),
-      ingredients:
-          (json['ingredients']?['list'] as List<dynamic>?)?.cast<String>(),
+      ingredients: (json['ingredients']?['list'] as List<dynamic>?)
+          ?.cast<String>(),
       ingredientsWithAllergens:
           json['ingredients']?['withAllergens'] as String?,
       traces: (json['traces']?['list'] as List<dynamic>?)?.cast<String>(),
       allergens: (json['allergens']?['list'] as List<dynamic>?)?.cast<String>(),
-      additives: (json['additives'] as Map<String, dynamic>?)
-          ?.map((key, value) => MapEntry(key, value as String)),
+      additives: (json['additives'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as String),
+      ),
       nutrientLevels: json['nutrientLevels'] != null
           ? NutrientLevels.fromJson(json['nutrientLevels'])
           : null,
       nutritionFacts: json['nutritionFacts'] != null
           ? NutritionFacts.fromJson(json['nutritionFacts'])
           : null,
-      ingredientsFromPalmOil:
-          json['ingredients']?['containsPalmOil'] as bool?,
-      containsPalmOil:
-          ProductAnalysis.fromString(json['analysis']?['palmOil']),
+      ingredientsFromPalmOil: json['ingredients']?['containsPalmOil'] as bool?,
+      containsPalmOil: ProductAnalysis.fromString(json['analysis']?['palmOil']),
       isVegan: ProductAnalysis.fromString(json['analysis']?['vegan']),
       isVegetarian: ProductAnalysis.fromString(json['analysis']?['vegetarian']),
     );
@@ -169,11 +168,13 @@ class NutritionFacts {
       proteins: json['proteins'] != null
           ? Nutriment.fromJson(json['proteins'])
           : null,
-      sodium:
-          json['sodium'] != null ? Nutriment.fromJson(json['sodium']) : null,
+      sodium: json['sodium'] != null
+          ? Nutriment.fromJson(json['sodium'])
+          : null,
       salt: json['salt'] != null ? Nutriment.fromJson(json['salt']) : null,
-      energy:
-          json['energy'] != null ? Nutriment.fromJson(json['energy']) : null,
+      energy: json['energy'] != null
+          ? Nutriment.fromJson(json['energy'])
+          : null,
     );
   }
 }

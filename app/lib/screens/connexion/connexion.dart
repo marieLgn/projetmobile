@@ -26,7 +26,7 @@ class _PageConnexionState extends State<PageConnexion>{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Connexion",
+                  'Connexion',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
@@ -36,16 +36,16 @@ class _PageConnexionState extends State<PageConnexion>{
                 ),
                 const SizedBox(height: 79),
 
-                ZoneDeTexte(controller: _emailController, hint: "Adresse Email", icon: Icons.email_outlined),
+                ZoneDeTexte(controller: _emailController, hint: 'Adresse Email', icon: Icons.email_outlined),
                 const SizedBox(height: 14),
 
-                ZoneDeTexte(controller: _passwordController, hint: "Mot de passe", icon: Icons.lock_outline, isPassword: true),
+                ZoneDeTexte(controller: _passwordController, hint: 'Mot de passe', icon: Icons.lock_outline, isPassword: true),
                 const SizedBox(height: 40),
 
-                Bouton_Dore(label: "Créer un compte", onPressed: () => context.push('/inscription')),
+                Bouton_Dore(label: 'Créer un compte', onPressed: () => context.push('/inscription')),
                 const SizedBox(height: 14),
 
-                Bouton_Dore(label: "Se connecter", onPressed: () => context.push('/homepage')),
+                Bouton_Dore(label: 'Se connecter', onPressed: () => context.push('/homepage')),
               ],
             ),
           ),
@@ -61,7 +61,7 @@ class ZoneDeTexte extends StatelessWidget{
   final IconData icon;
   final bool isPassword;
 
-  ZoneDeTexte({required this.controller, required this.hint, required this.icon, this.isPassword = false});
+  const ZoneDeTexte({super.key, required this.controller, required this.hint, required this.icon, this.isPassword = false});
   
   @override 
   Widget build(BuildContext context)
@@ -93,7 +93,7 @@ class Bouton_Dore extends StatelessWidget{
   final String label;
   final VoidCallback onPressed;
 
-  const Bouton_Dore({required this.label, required this.onPressed});
+  const Bouton_Dore({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context){

@@ -17,9 +17,16 @@ class HomePage extends StatelessWidget {
         centerTitle: false,
         actions: <Widget>[
           IconButton(
+            onPressed: () => context.push('/favorites'),
+            icon: const Padding(
+              padding: EdgeInsetsDirectional.only(end: 8.0),
+              child: Icon(Icons.favorite_border),
+            ),
+          ),
+          IconButton(
             onPressed: () => _onScanButtonPressed(context),
-            icon: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8.0),
+            icon: const Padding(
+              padding: EdgeInsetsDirectional.only(end: 8.0),
               child: Icon(AppIcons.barcode),
             ),
           ),

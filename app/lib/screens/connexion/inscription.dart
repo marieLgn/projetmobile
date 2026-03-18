@@ -30,7 +30,7 @@ class _PageInscriptionState extends State<PageInscription>{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Inscription",
+                  'Inscription',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,

@@ -7,6 +7,7 @@ import 'package:formation_flutter/screens/connexion/inscription.dart';
 import 'package:formation_flutter/screens/homepage/homepage_screen.dart';
 import 'package:formation_flutter/screens/product/product_page.dart';
 import 'package:formation_flutter/screens/product/recall_details_page.dart';
+import 'package:formation_flutter/screens/favorites/favorites_screen.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
@@ -35,7 +36,11 @@ GoRouter _router = GoRouter(
     GoRoute(
       path: '/homepage', 
       builder: (context, state) => const HomePage(),
-    )
+    ),
+    GoRoute(
+      path: '/favorites',
+      builder: (context, state) => const FavoritesScreen(),
+    ),
   ],
 );
 
