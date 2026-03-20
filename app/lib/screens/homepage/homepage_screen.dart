@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
             onPressed: () => context.push('/favorites'),
             icon: const Padding(
               padding: EdgeInsetsDirectional.only(end: 8.0),
-              child: Icon(Icons.favorite_border),
+              child: Icon(Icons.star_outline_rounded),
             ),
           ),
           IconButton(
