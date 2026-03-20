@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formation_flutter/api/auth_service.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,17 +10,43 @@ class PageConnexion extends StatefulWidget {
   State<PageConnexion> createState() => _PageConnexionState();
 }
 
-class _PageConnexionState extends State<PageConnexion>{
-
+class _PageConnexionState extends State<PageConnexion> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _seConnecter() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Veuillez remplir tous les champs.')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    try {
+      await AuthService().login(email, password);
+      if (mounted) context.go('/homepage');
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur de connexion : email ou mot de passe incorrect.')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child:Center(
+        child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -31,7 +58,7 @@ class _PageConnexionState extends State<PageConnexion>{
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                     color: AppColors.blueDark,
-                    fontFamily: 'Avenir'
+                    fontFamily: 'Avenir',
                   ),
                 ),
                 const SizedBox(height: 79),
@@ -45,27 +72,28 @@ class _PageConnexionState extends State<PageConnexion>{
                 Bouton_Dore(label: 'Créer un compte', onPressed: () => context.push('/inscription')),
                 const SizedBox(height: 14),
 
-                Bouton_Dore(label: 'Se connecter', onPressed: () => context.push('/homepage')),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : Bouton_Dore(label: 'Se connecter', onPressed: _seConnecter),
               ],
             ),
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 }
 
-class ZoneDeTexte extends StatelessWidget{
+class ZoneDeTexte extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final IconData icon;
   final bool isPassword;
 
   const ZoneDeTexte({super.key, required this.controller, required this.hint, required this.icon, this.isPassword = false});
-  
-  @override 
-  Widget build(BuildContext context)
-  {
+
+  @override
+  Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
@@ -78,44 +106,41 @@ class ZoneDeTexte extends StatelessWidget{
         contentPadding: const EdgeInsets.symmetric(vertical: 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: AppColors.black)
+          borderSide: const BorderSide(color: AppColors.black),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: AppColors.black, width: 2),
-        )
-      )
+        ),
+      ),
     );
   }
 }
 
-class Bouton_Dore extends StatelessWidget{
+class Bouton_Dore extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
 
   const Bouton_Dore({super.key, required this.label, required this.onPressed});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.yellow,
         foregroundColor: AppColors.blueDark,
-        fixedSize: Size(197, 45),
+        fixedSize: const Size(197, 45),
         shape: const StadiumBorder(),
-        padding : const EdgeInsets.symmetric(vertical: 0),
-        elevation : 0
+        padding: const EdgeInsets.symmetric(vertical: 0),
+        elevation: 0,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)
-          ),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
           const SizedBox(width: 7.5),
-          const Icon(Icons.arrow_forward, size: 15)
+          const Icon(Icons.arrow_forward, size: 15),
         ],
       ),
     );

@@ -37,6 +37,6 @@ class HomePage extends StatelessWidget {
   }
 
   void _onScanButtonPressed(BuildContext context) {
-    context.push('/product', extra: '3168930010265');
+    context.push('/product', extra: '7622300689124');
   }
 }
