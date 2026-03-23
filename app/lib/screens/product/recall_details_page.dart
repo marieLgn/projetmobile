@@ -38,7 +38,7 @@ class RecallDetailsPage extends StatelessWidget {
               ),
             _buildSection(
               'Dates de commercialisation',
-              "Du ${recallData['dateDebut'] ?? ''} au ${recallData['dateFin'] ?? ''}",
+              "Du ${formatDate(recallData['dateDebut'])} au ${formatDate(recallData['dateFin'])}",
             ),
             _buildSection(
               'Distributeurs',
@@ -97,4 +97,10 @@ class RecallDetailsPage extends StatelessWidget {
       ],
     );
   }
+}
+
+String formatDate(String? date) {
+  if (date == null || date.isEmpty) return '';
+  final d = DateTime.parse(date);
+  return '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
 }
