@@ -25,9 +25,14 @@ class PocketbaseFetcher extends ChangeNotifier {
           );
 
       _state = RecallFetcherSuccess(
-        motif: record.getStringValue('motif'),
-        conseil: record.getStringValue('conseils'),
-        data: record.toJson(),
+        data: {
+          'dateDebut' : record.getStringValue('date_debut_comm'),
+          'dateFin' : record.getStringValue('date_fin_comm'),
+          'distributeurs': record.getStringValue('distributeur'),
+          'zone_geo': record.getStringValue('zone'),
+          'motif':record.getStringValue('motif'),
+          'conseil':record.getStringValue('conseil')
+        },
       );
     } catch (e) {
       _state = RecallFetcherError(e);
@@ -44,15 +49,8 @@ sealed class RecallFetcherState {}
 class RecallFetcherLoading extends RecallFetcherState {}
 
 class RecallFetcherSuccess extends RecallFetcherState {
-  RecallFetcherSuccess({
-    required this.motif,
-    required this.conseil,
-    required this.data,
-  });
-
-  final String motif;
-  final String conseil;
-  final Map<String, dynamic> data;
+    RecallFetcherSuccess({required this.data});
+    final Map<String, dynamic> data;
 }
 
 class RecallFetcherError extends RecallFetcherState {

@@ -46,23 +46,15 @@ class RecallDetailsPage extends StatelessWidget {
             ),
             _buildSection(
               'Zone géographique',
-              recallData['zoneGeographique'],
+              recallData['zone_geo'],
             ),
             _buildSection(
               'Motif du rappel',
               recallData['motif'],
             ),
             _buildSection(
-              'Risques encourus',
-              recallData['risques'],
-            ),
-            _buildSection(
-              'Informations complémentaires',
-              recallData['infosComplementaires'],
-            ),
-            _buildSection(
-              'Conduite à tenir',
-              recallData['conduiteATenir'],
+              'Préconisations sanitaires',
+              recallData['conseil'],
             ),
             const SizedBox(height: 20),
           ],
