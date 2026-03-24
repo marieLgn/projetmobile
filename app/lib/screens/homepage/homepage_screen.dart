@@ -5,6 +5,7 @@ import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/screens/favorites/favorite_product_card.dart';
 import 'package:formation_flutter/screens/homepage/homepage_empty.dart';
 import 'package:formation_flutter/screens/homepage/homepage_fetcher.dart';
+import 'package:formation_flutter/api/auth_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +38,26 @@ class HomePage extends StatelessWidget {
                 icon: const Padding(
                   padding: EdgeInsetsDirectional.only(end: 8.0),
                   child: Icon(AppIcons.barcode),
+                ),
+              ),
+            ),
+            Builder(
+              builder: (innerContext) => IconButton(
+                onPressed: () => _onLogoutButtonPressed(innerContext),
+                icon: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.blueDark,
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                      size: 20.0,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -83,5 +104,42 @@ class HomePage extends StatelessWidget {
         context.read<HomepageFetcher>().loadHistory();
       }
     });
+  }
+
+  Future<void> _onLogoutButtonPressed(BuildContext context) async {
+    final bool? disconnect = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text(
+            'Déconnexion',
+            style: TextStyle(color: AppColors.blueDark),
+          ),
+          content: const Text('Voulez-vous vous déconnecter ?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text(
+                'Annuler',
+                style: TextStyle(color: AppColors.grey3),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.blueDark,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Déconnexion'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (disconnect == true && context.mounted) {
+      AuthService().logout();
+      context.go('/');
+    }
   }
 }
