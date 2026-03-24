@@ -47,12 +47,28 @@ class HomepageFetcher extends ChangeNotifier {
           .toList();
 
       // Récupère les infos produits depuis Open Food Facts
-      final products = await Future.wait(
-        barcodes.map((barcode) => OpenFoodFactsAPI().getProduct(barcode)),
+      // On traite chaque barcode un par un de manière ultra-sécurisée
+      final List<Product?> results = await Future.wait(
+        barcodes.map((barcode) async {
+          try {
+            // On appelle l'API
+            final product = await OpenFoodFactsAPI().getProduct(barcode);
+            return product;
+          } catch (e) {
+            // Si le produit n'est pas trouvé (404, 500, etc.), on retourne null pour ne pas l'afficher
+            debugPrint('Produit ignoré de l\'historique (erreur API) : $barcode');
+            return null;
+          }
+        }),
       );
+
+      // On ne garde que les produits valides (on enlève les nulls)
+      final products = results.whereType<Product>().toList();
 
       _state = HomepageFetcherSuccess(products);
     } catch (error) {
+      debugPrint('--- Global History Error: $error');
+      // En cas d'erreur vraiment critique (ex: PocketBase), on affiche l'erreur
       _state = HomepageFetcherError(error);
     } finally {
       notifyListeners();

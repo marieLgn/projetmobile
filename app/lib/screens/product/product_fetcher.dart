@@ -21,7 +21,16 @@ class ProductFetcher extends ChangeNotifier {
       Product product = await OpenFoodFactsAPI().getProduct(_barcode);
       _state = ProductFetcherSuccess(product);
     } catch (error) {
-      _state = ProductFetcherError(error);
+      String errorMessage = "Désolé, une erreur est survenue lors de la récupération du produit.";
+      
+      // On personnalise un peu selon l'erreur si besoin
+      if (error.toString().contains('404')) {
+        errorMessage = "Ce produit n'est pas répertorié sur Open Food Facts.";
+      } else if (error.toString().contains('500')) {
+        errorMessage = "Le serveur de données rencontre un problème avec ce code spécifique.";
+      }
+      
+      _state = ProductFetcherError(errorMessage);
     } finally {
       notifyListeners();
     }

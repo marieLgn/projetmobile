@@ -38,41 +38,42 @@ class FavoriteProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.push('/product', extra: product.barcode);
-      },
+      onTap: () => context.push('/product', extra: product.barcode),
       child: Container(
-        // The total container height is defined by its children (the Stack)
-        // We add some bottom margin for spacing between list items
-        margin: const EdgeInsets.only(bottom: 24.0, left: 16.0, right: 16.0),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Stack(
-          clipBehavior: Clip.none,
           children: [
-            // White Card Background
+            // 1. LA CARTE BLANCHE
             Container(
-              margin: const EdgeInsets.only(top: 20.0, left: 16.0), // pushes card down and right so image overlaps
-              padding: const EdgeInsets.only(left: 100.0, right: 16.0, top: 16.0, bottom: 16.0),
+              width: double.infinity,
+              margin: const EdgeInsets.only(top: 20.0), // On descend la carte de 20px
+              padding: const EdgeInsets.only(
+                left: 134.0, // 18 (marge gauche) + 100 (largeur image) + 16 (espace) = 134
+                right: 16.0,
+                top: 16.0,
+                bottom: 16.0,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    offset: const Offset(0, 8),
-                    blurRadius: 20,
-                    spreadRadius: -2,
+                    color: Colors.black.withOpacity(0.05),
+                    offset: const Offset(0, 4),
+                    blurRadius: 10,
                   ),
                 ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    product.name ?? 'Produit inconnu',
+                    product.name ?? '',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.blueDark, // Or AppColors.blue
+                      color: AppColors.blueDark,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -88,59 +89,58 @@ class FavoriteProductCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
-                  // NutriScore
-                  if (product.nutriScore != null && product.nutriScore != ProductNutriScore.unknown)
-                    Row(
-                      children: [
-                        Container(
-                          width: 14,
-                          height: 14,
-                          decoration: BoxDecoration(
-                            color: _getNutriScoreColor(),
-                            shape: BoxShape.circle,
-                          ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: _getNutriScoreColor(),
+                          shape: BoxShape.circle,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Nutriscore : ${_getNutriScoreLabel()}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: AppColors.blueDark,
-                          ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Nutriscore : ${_getNutriScoreLabel()}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColors.blueDark,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
-            
-            // Image overriding the card
+
+            // 2. L'IMAGE (par-dessus)
             Positioned(
               top: 0,
-              left: 0,
+              left: 18, // L'image reste à l'intérieur de la carte horizontalement
               child: Container(
-                width: 100,
-                height: 120,
+                width: 100, // Image plus grande
+                height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
-                      offset: const Offset(4, 4),
-                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(2, 4),
+                      blurRadius: 8,
                     ),
                   ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: product.picture != null
-                      ? Image.network(
-                          product.picture!,
-                          fit: BoxFit.cover,
-                        )
+                      ? Image.network(product.picture!, fit: BoxFit.cover)
                       : Container(
                           color: AppColors.grey1,
-                          child: const Icon(Icons.image_not_supported, color: AppColors.grey2),
+                          child: const Icon(
+                            Icons.inventory_2_outlined,
+                            color: AppColors.grey2,
+                            size: 40,
+                          ),
                         ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/l10n/app_localizations.dart';
 import 'package:formation_flutter/res/app_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/screens/favorites/favorite_product_card.dart';
 import 'package:formation_flutter/screens/homepage/homepage_empty.dart';
@@ -8,6 +9,8 @@ import 'package:formation_flutter/screens/homepage/homepage_fetcher.dart';
 import 'package:formation_flutter/api/auth_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,25 +22,36 @@ class HomePage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => HomepageFetcher(),
       child: Scaffold(
+        backgroundColor: AppColors.grey1,
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
           title: Text(localizations.my_scans_screen_title),
           centerTitle: false,
           actions: <Widget>[
             Builder(
               builder: (innerContext) => IconButton(
                 onPressed: () => innerContext.push('/favorites'),
-                icon: const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8.0),
-                  child: Icon(Icons.star_outline_rounded),
+                icon: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 8.0),
+                  child: SvgPicture.asset(
+                    'res/svg/bouton_favorites.svg',
+                    width: 24.05,
+                    height: 23,
+                  ),
                 ),
               ),
             ),
             Builder(
               builder: (innerContext) => IconButton(
                 onPressed: () => _onScanButtonPressed(innerContext),
-                icon: const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8.0),
-                  child: Icon(AppIcons.barcode),
+                icon: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 8.0),
+                  child: SvgPicture.asset(
+                    'res/svg/bouton_barcode.svg',
+                    width: 31,
+                    height: 23,
+                  ),
                 ),
               ),
             ),
@@ -46,17 +60,10 @@ class HomePage extends StatelessWidget {
                 onPressed: () => _onLogoutButtonPressed(innerContext),
                 icon: Padding(
                   padding: const EdgeInsetsDirectional.only(end: 8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.blueDark,
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
+                  child: SvgPicture.asset(
+                    'res/svg/bouton_deco.svg',
+                    width: 23,
+                    height: 23,
                   ),
                 ),
               ),
@@ -98,12 +105,51 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _onScanButtonPressed(BuildContext context) {
-    context.push('/product', extra: '7622300689124').then((_) {
-      if (context.mounted) {
-        context.read<HomepageFetcher>().loadHistory();
+  Future<void> _onScanButtonPressed(BuildContext context) async {
+    final res = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SimpleBarcodeScannerPage(
+          appBarTitle: 'Retour',
+          cancelButtonText: 'Annuler',
+        ),
+      ),
+    );
+
+    if (res is String && res != '-1' && res.isNotEmpty) {
+      if (!context.mounted) return;
+
+      try {
+        final pb = AuthService().pb;
+        
+        // Save to history directly without checking Rappel_Produit
+        final user = pb.authStore.model;
+        if (user != null) {
+          await pb.collection('scan_history').create(body: {
+            'user': (user as RecordModel).id,
+            'barcode': res,
+          });
+        }
+
+        if (!context.mounted) return;
+        
+        // Navigation vers la page produit
+        await context.push('/product', extra: res);
+
+        // Rafraichit l'historique de la page d'accueil
+        if (context.mounted) {
+          context.read<HomepageFetcher>().loadHistory();
+        }
+      } catch (e) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Une erreur est survenue lors de l\'enregistrement du scan.'),
+            backgroundColor: AppColors.blueDark,
+          ),
+        );
       }
-    });
+    }
   }
 
   Future<void> _onLogoutButtonPressed(BuildContext context) async {
