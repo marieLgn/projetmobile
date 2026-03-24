@@ -48,9 +48,18 @@ class FavoritesFetcher extends ChangeNotifier {
           .toList();
 
       // Récupère les infos produits depuis Open Food Facts
-      final products = await Future.wait(
-        barcodes.map((barcode) => OpenFoodFactsAPI().getProduct(barcode)),
+      final results = await Future.wait(
+        barcodes.map((barcode) async {
+          try {
+            return await OpenFoodFactsAPI().getProduct(barcode);
+          } catch (e) {
+            debugPrint('Favori ignoré (erreur API) : $barcode');
+            return null;
+          }
+        }),
       );
+
+      final products = results.whereType<Product>().toList();
 
       _state = FavoritesFetcherSuccess(products);
     } catch (error) {

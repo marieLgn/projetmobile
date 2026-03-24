@@ -5,8 +5,11 @@ import 'package:formation_flutter/screens/product/product_fetcher.dart';
 import 'package:formation_flutter/screens/product/states/empty/product_page_empty.dart';
 import 'package:formation_flutter/screens/product/states/error/product_page_error.dart';
 import 'package:formation_flutter/screens/product/states/success/product_page_body.dart';
+import 'package:formation_flutter/screens/product/favorite_product_fetcher.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key, required this.barcode})
@@ -23,6 +26,7 @@ class ProductPage extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductFetcher(barcode: barcode)),
         ChangeNotifierProvider(create: (_) => PocketbaseFetcher(barcode: barcode)),
+        ChangeNotifierProvider(create: (_) => FavoriteProductFetcher(barcode: barcode)),
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -47,6 +51,19 @@ class ProductPage extends StatelessWidget {
                 icon: AppIcons.close,
                 tooltip: materialLocalizations.closeButtonTooltip,
                 onPressed: Navigator.of(context).pop,
+              ),
+            ),
+            PositionedDirectional(
+              top: 0.0,
+              end: 48.0, // On le met à gauche du bouton partage
+              child: Consumer<FavoriteProductFetcher>(
+                builder: (context, favNotifier, _) {
+                  return _HeaderIcon(
+                    icon: favNotifier.isFavorite ? Icons.star : Icons.star_border,
+                    tooltip: 'Ajouter aux favoris',
+                    onPressed: () => favNotifier.toggleFavorite(),
+                  );
+                },
               ),
             ),
             PositionedDirectional(
