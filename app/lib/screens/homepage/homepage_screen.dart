@@ -120,17 +120,6 @@ class HomePage extends StatelessWidget {
       if (!context.mounted) return;
 
       try {
-        final pb = AuthService().pb;
-        
-        // Save to history directly without checking Rappel_Produit
-        final user = pb.authStore.model;
-        if (user != null) {
-          await pb.collection('scan_history').create(body: {
-            'user': (user as RecordModel).id,
-            'barcode': res,
-          });
-        }
-
         if (!context.mounted) return;
         
         // Navigation vers la page produit

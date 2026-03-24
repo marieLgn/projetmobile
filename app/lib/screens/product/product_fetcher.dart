@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/api/open_food_facts_api.dart';
 import 'package:formation_flutter/model/product.dart';
+import 'package:formation_flutter/api/auth_service.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 
 class ProductFetcher extends ChangeNotifier {
@@ -20,6 +22,9 @@ class ProductFetcher extends ChangeNotifier {
     try {
       Product product = await OpenFoodFactsAPI().getProduct(_barcode);
       _state = ProductFetcherSuccess(product);
+      
+      // Enregistrement dans l'historique car la page s'est chargée avec succès
+      _addToHistory();
     } catch (error) {
       String errorMessage = "Désolé, une erreur est survenue lors de la récupération du produit.";
       
@@ -37,6 +42,23 @@ class ProductFetcher extends ChangeNotifier {
   }
 
   ProductFetcherState get state => _state;
+
+  Future<void> _addToHistory() async {
+    try {
+      final pb = AuthService().pb;
+      final user = pb.authStore.model;
+      if (user != null) {
+        await pb.collection('scan_history').create(body: {
+          'user': (user as RecordModel).id,
+          'barcode': _barcode,
+        });
+      }
+    } catch (e) {
+      // On ignore silencieusement si l'historique ne s'enregistre pas
+      // pour ne pas bloquer l'utilisateur qui a déjà le produit chargé.
+      debugPrint('Erreur lors de l\'ajout à l\'historique : $e');
+    }
+  }
 }
 
 sealed class ProductFetcherState {}

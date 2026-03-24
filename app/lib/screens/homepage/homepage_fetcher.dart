@@ -46,24 +46,31 @@ class HomepageFetcher extends ChangeNotifier {
           .where((b) => b.isNotEmpty && b != '0')
           .toList();
 
-      // Récupère les infos produits depuis Open Food Facts
-      // On traite chaque barcode un par un de manière ultra-sécurisée
-      final List<Product?> results = await Future.wait(
-        barcodes.map((barcode) async {
-          try {
-            // On appelle l'API
-            final product = await OpenFoodFactsAPI().getProduct(barcode);
-            return product;
-          } catch (e) {
-            // Si le produit n'est pas trouvé (404, 500, etc.), on retourne null pour ne pas l'afficher
-            debugPrint('Produit ignoré de l\'historique (erreur API) : $barcode');
-            return null;
-          }
-        }),
-      );
+      // Garde uniquement la première occurrence de chaque barcode (le plus récent)
+      final uniqueBarcodes = <String>[];
+      for (final b in barcodes) {
+        if (!uniqueBarcodes.contains(b)) {
+          uniqueBarcodes.add(b);
+        }
+      }
 
-      // On ne garde que les produits valides (on enlève les nulls)
-      final products = results.whereType<Product>().toList();
+      // Récupère les infos produits depuis Open Food Facts
+      // On les charge l'une après l'autre plutôt qu'en bloc pour ne pas faire d'erreur réseau
+      final List<Product> products = [];
+      for (final barcode in uniqueBarcodes) {
+        try {
+          final product = await OpenFoodFactsAPI().getProduct(barcode);
+          products.add(product);
+        } catch (e) {
+          debugPrint('Produit $barcode en erreur lors du chargement de l\'historique : $e');
+          // Ajout d'un produit "fantôme" pour signaler le souci sans faire sauter la liste
+          products.add(Product(
+            barcode: barcode,
+            name: 'Données non disponibles',
+            brands: ['Code : $barcode'],
+          ));
+        }
+      }
 
       _state = HomepageFetcherSuccess(products);
     } catch (error) {
