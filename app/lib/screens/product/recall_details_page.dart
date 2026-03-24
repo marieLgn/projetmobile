@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RecallDetailsPage extends StatelessWidget {
   final Map<String, dynamic> recallData;
@@ -16,11 +16,15 @@ class RecallDetailsPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.reply, color: Color(0xFF1A1A40)),
-            onPressed: () async {
-              final url = Uri.parse(recallData['pdfUrl'] ?? '');
-              if (await canLaunchUrl(url)) {
-                await launchUrl(url);
+            icon: const Icon(Icons.ios_share, color: Color(0xFF1A1A40)),
+            onPressed: () {
+              final link = recallData['lien_rappel'] ?? recallData['lien_fiche_rappel'];
+              if (link != null && link.isNotEmpty) {
+                Share.share('Découvrez ce rappel produit : $link');
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Aucun lien de rappel disponible.')),
+                );
               }
             },
           ),
