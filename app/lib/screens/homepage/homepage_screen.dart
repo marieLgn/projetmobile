@@ -31,12 +31,12 @@ class HomePage extends StatelessWidget {
           actions: <Widget>[
             Builder(
               builder: (innerContext) => IconButton(
-                onPressed: () => innerContext.push('/favorites'),
+                onPressed: () => _onScanButtonPressed(innerContext),
                 icon: Padding(
                   padding: const EdgeInsetsDirectional.only(end: 8.0),
                   child: SvgPicture.asset(
-                    'res/svg/bouton_favorites.svg',
-                    width: 24.05,
+                    'res/svg/bouton_barcode.svg',
+                    width: 31,
                     height: 23,
                   ),
                 ),
@@ -44,12 +44,12 @@ class HomePage extends StatelessWidget {
             ),
             Builder(
               builder: (innerContext) => IconButton(
-                onPressed: () => _onScanButtonPressed(innerContext),
+                onPressed: () => innerContext.push('/favorites'),
                 icon: Padding(
                   padding: const EdgeInsetsDirectional.only(end: 8.0),
                   child: SvgPicture.asset(
-                    'res/svg/bouton_barcode.svg',
-                    width: 31,
+                    'res/svg/bouton_favorites.svg',
+                    width: 24.05,
                     height: 23,
                   ),
                 ),

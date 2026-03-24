@@ -8,7 +8,6 @@ import 'package:formation_flutter/screens/product/states/success/product_page_bo
 import 'package:formation_flutter/screens/product/favorite_product_fetcher.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -56,45 +55,13 @@ class ProductPage extends StatelessWidget {
             ),
             PositionedDirectional(
               top: 0.0,
-              end: 48.0, // On le met à gauche du bouton partage
+              end: 0.0,
               child: Consumer<FavoriteProductFetcher>(
                 builder: (context, favNotifier, _) {
                   return _HeaderIcon(
                     icon: favNotifier.isFavorite ? Icons.star : Icons.star_border,
                     tooltip: 'Ajouter aux favoris',
                     onPressed: () => favNotifier.toggleFavorite(),
-                  );
-                },
-              ),
-            ),
-            PositionedDirectional(
-              top: 0.0,
-              end: 0.0,
-              child: Consumer<PocketbaseFetcher>(
-                builder: (context, recallNotifier, _) {
-                  return _HeaderIcon(
-                    icon: AppIcons.share,
-                    tooltip: materialLocalizations.shareButtonLabel,
-                    onPressed: () {
-                      final recallState = recallNotifier.state;
-                      String? shareLink;
-                      String messagePrefix = 'Découvrez ce produit sur Open Food Facts : ';
-
-                      // Si on a un rappel produit
-                      if (recallState is RecallFetcherSuccess) {
-                        shareLink = recallState.data['lien_rappel'] ?? recallState.data['lien_fiche_rappel'];
-                        if (shareLink != null && shareLink.isNotEmpty) {
-                          messagePrefix = 'Attention ! Ce produit fait l\'objet d\'un rappel produit : ';
-                        }
-                      }
-
-                      // Si pas de rappel ou pas de lien de rappel, on utilise Open Food Facts
-                      if (shareLink == null || shareLink.isEmpty) {
-                        shareLink = 'https://fr.openfoodfacts.org/produit/$barcode';
-                      }
-
-                      Share.share('$messagePrefix$shareLink');
-                    },
                   );
                 },
               ),

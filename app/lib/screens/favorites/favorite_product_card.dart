@@ -46,23 +46,23 @@ class FavoriteProductCard extends StatelessWidget {
             // 1. LA CARTE BLANCHE
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.only(top: 20.0), // On descend la carte de 20px
+              margin: const EdgeInsets.only(top: 18.0), // On descend la carte de 20px
               padding: const EdgeInsets.only(
-                left: 134.0, // 18 (marge gauche) + 100 (largeur image) + 16 (espace) = 134
+                left: 140.0,
                 right: 16.0,
                 top: 16.0,
                 bottom: 16.0,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    offset: const Offset(0, 4),
-                    blurRadius: 10,
-                  ),
-                ],
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(2, 4),
+                      blurRadius: 8,
+                    ),
+                  ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +71,7 @@ class FavoriteProductCard extends StatelessWidget {
                   Text(
                     product.name ?? '',
                     style: const TextStyle(
+                      fontFamily: 'Avenir-Heavy',
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
                       color: AppColors.blueDark,
@@ -78,31 +79,33 @@ class FavoriteProductCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     product.brands?.join(', ') ?? '',
                     style: const TextStyle(
+                      fontFamily: 'Avenir-Roman',
                       fontSize: 14,
                       color: AppColors.grey2,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 2),
                   Row(
                     children: [
                       Container(
-                        width: 12,
-                        height: 12,
+                        width: 13,
+                        height: 13,
                         decoration: BoxDecoration(
                           color: _getNutriScoreColor(),
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 9),
                       Text(
                         'Nutriscore : ${_getNutriScoreLabel()}',
                         style: const TextStyle(
+                          fontFamily: 'Avenir-Roman',
                           fontSize: 14,
                           color: AppColors.blueDark,
                         ),
@@ -116,22 +119,16 @@ class FavoriteProductCard extends StatelessWidget {
             // 2. L'IMAGE (par-dessus)
             Positioned(
               top: 0,
-              left: 18, // L'image reste à l'intérieur de la carte horizontalement
+              left: 18,
+               // L'image reste à l'intérieur de la carte horizontalement
               child: Container(
-                width: 100, // Image plus grande
-                height: 100,
+                width: 113, // Image plus grande
+                height: 113,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(2, 4),
-                      blurRadius: 8,
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(4),
                   child: product.picture != null
                       ? Image.network(product.picture!, fit: BoxFit.cover)
                       : Container(
